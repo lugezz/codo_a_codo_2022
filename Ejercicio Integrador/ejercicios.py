@@ -208,14 +208,16 @@ class Persona:
         self.validar_DNI()
 
     def mostrar(self):
-        print(f'Mi nombre es {self.nombre}, DNI: {self.DNI} y tengo {self.edad} años')
+        return f'Mi nombre es {self.nombre}, DNI: {self.DNI} y tengo {self.edad} años'
 
     def es_mayor_de_edad(self):
         return self.edad >= 18
 
 
-personilla = Persona("Juan", 42, "3232")
-personilla.mostrar()
+personilla = Persona("Juan", 22, "3232")
+print("Ejercicio 6:")
+print(personilla.mostrar())
+print("*" * 100)
 
 # 7. Crea una clase llamada Cuenta que tendrá los siguientes atributos: titular (que es una
 # persona) y cantidad (puede tener decimales). El titular será obligatorio y la cantidad es
@@ -230,6 +232,43 @@ personilla.mostrar()
 # rojos.
 
 
+class Cuenta():
+
+    def __init__(self, titular, cantidad=0):
+        self.titular = titular
+        self.__cantidad = cantidad
+
+    @property
+    def titular(self):
+        return self.__titular
+
+    @property
+    def cantidad(self):
+        return self.__cantidad
+
+    @titular.setter
+    def titular(self, titular):
+        self.__titular = titular
+
+    def mostrar(self):
+        print(f'Titular: {self.titular.mostrar()} | Su cantidad es {self.cantidad}')
+
+    def ingresar(self, cantidad):
+        if cantidad > 0:
+            self.__cantidad = self.__cantidad + cantidad
+
+    def retirar(self, cantidad):
+        if cantidad > 0:
+            self.__cantidad = self.__cantidad - cantidad
+
+
+cuentilla = Cuenta(personilla, 100)
+cuentilla.ingresar(400)
+cuentilla.retirar(10)
+print("Ejercicio 7:")
+cuentilla.mostrar()
+print("*" * 100)
+
 # 8. Vamos a definir ahora una “Cuenta Joven”, para ello vamos a crear una nueva clase
 # CuantaJoven que deriva de la clase creada en el punto 7. Cuando se crea esta nueva clase,
 # además del titular y la cantidad se debe guardar una bonificación que estará expresada en
@@ -242,3 +281,40 @@ personilla.mostrar()
 #  Además, la retirada de dinero sólo se podrá hacer si el titular es válido.
 #  El método mostrar() debe devolver el mensaje de “Cuenta Joven” y la bonificación de la
 # cuenta.
+
+
+class CuentaJoven(Cuenta):
+
+    def __init__(self, titular, cantidad=0, bonificacion=0):
+        super().__init__(titular, cantidad)
+        self.bonificacion = bonificacion
+
+    @property
+    def bonificacion(self):
+        return self.__bonificacion
+
+    @bonificacion.setter
+    def bonificacion(self, bonificacion):
+        self.__bonificacion = bonificacion
+
+    def mostrar(self):
+        print(f'Cuenta Joven: Su cantidad es {self.cantidad} - Su bonificación es {self.bonificacion}%')
+
+    def es_valido_titular(self):
+        return self.titular.es_mayor_de_edad() and self.titular.edad < 25
+
+    def retirar(self, cantidad):
+        if not self.es_valido_titular():
+            mensaje = "estás viejito" if self.titular.edad >= 25 else "sos un niño"
+            print(f'No puedes retirar, {mensaje}')
+
+        else:
+            super().retirar(cantidad)
+
+
+cuentilla_joven = CuentaJoven(personilla, bonificacion=20)
+cuentilla_joven.ingresar(1300)
+cuentilla_joven.retirar(128)
+
+print("Ejercicio 8:")
+cuentilla_joven.mostrar()
