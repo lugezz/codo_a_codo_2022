@@ -1,9 +1,6 @@
 
 # 1. Escribir una función que calcule el máximo común divisor entre dos números.
 
-from unittest import result
-
-
 def get_divisores(numero):
     resp = []
     if numero == 1:
@@ -114,6 +111,7 @@ def get_mas_repetido(mi_diccionario):
 
     return resultado
 
+
 print("Ejercicio 4", get_mas_repetido(texto_diccionario))
 print("*" * 100)
 
@@ -122,6 +120,29 @@ print("*" * 100)
 # del usuario y lo devuelva, iterando mientras el valor no sea correcto. Intente resolver el
 # ejercicio tanto de manera iterativa como recursiva.
 
+es_entero = False
+
+
+def get_int(numero):
+    global es_entero
+    respuesta = 0
+    try:
+        respuesta = int(numero)
+        es_entero = True
+
+    except ValueError:
+        print("Ingreso incorrecto, intente nuevamente")
+
+    return respuesta
+
+
+while not es_entero:
+    ingreso = input('Ingrese un número: ')
+    valor = get_int(ingreso)
+
+
+print("Ejercicio 5: Ingresaste el valor", valor)
+print("*" * 100)
 
 # 6. Crear una clase llamada Persona. Sus atributos son: nombre, edad y DNI. Construya los
 # siguientes métodos para la clase:
@@ -131,6 +152,70 @@ print("*" * 100)
 #  mostrar(): Muestra los datos de la persona.
 #  Es_mayor_de_edad(): Devuelve un valor lógico indicando si es mayor de edad.
 
+
+class Persona:
+
+    def __init__(self, nombre="", edad=0, DNI=""):
+        self.nombre = nombre
+        self.edad = edad
+        self.DNI = DNI
+
+    @property
+    def nombre(self):
+        return self.__nombre
+
+    @property
+    def edad(self):
+        return self.__edad
+
+    @property
+    def DNI(self):
+        return self.__DNI
+
+    def validar_nombre(self):
+        # Máximo largo 100 caracteres
+        if len(self.__nombre) > 100:
+            print('Nombre Incorrecto!')
+            self.__nombre = ""
+
+    def validar_edad(self):
+        if self.__edad < 0:
+            print('Edad Incorrecta!')
+            self.__edad = 0
+
+    def validar_DNI(self):
+        # Debe tener 7 a 9 caracteres
+        if len(self.__DNI) < 7 or len(self.__DNI) > 9:
+            print('DNI Incorrecto!')
+            if len(self.__DNI) < 7:
+                self.__DNI = f'{"0" * (8 - len(self.__DNI))}{self.__DNI}'
+            else:
+                self.__DNI = self.__DNI[:8]
+
+    @nombre.setter
+    def nombre(self, nombre):
+        self.__nombre = nombre
+        self.validar_nombre()
+
+    @edad.setter
+    def edad(self, edad):
+        self.__edad = edad
+        self.validar_edad()
+
+    @DNI.setter
+    def DNI(self, DNI):
+        self.__DNI = DNI
+        self.validar_DNI()
+
+    def mostrar(self):
+        print(f'Mi nombre es {self.nombre}, DNI: {self.DNI} y tengo {self.edad} años')
+
+    def es_mayor_de_edad(self):
+        return self.edad >= 18
+
+
+personilla = Persona("Juan", 42, "3232")
+personilla.mostrar()
 
 # 7. Crea una clase llamada Cuenta que tendrá los siguientes atributos: titular (que es una
 # persona) y cantidad (puede tener decimales). El titular será obligatorio y la cantidad es
