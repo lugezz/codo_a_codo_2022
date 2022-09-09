@@ -1,6 +1,9 @@
 
 # 1. Escribir una función que calcule el máximo común divisor entre dos números.
 
+from unittest import result
+
+
 def get_divisores(numero):
     resp = []
     if numero == 1:
@@ -52,10 +55,10 @@ try:
 except Exception:
     print("Ingrese números correctos")
 
-
-# 2. Escribir una función que calcule el mínimo común múltiplo entre dos números
 print("*" * 100)
 
+
+# 2. Escribir una función que calcule el mínimo común múltiplo entre dos números
 
 def minimo_comun_multipo(num1, num2):
     respuesta = 1
@@ -84,16 +87,35 @@ try:
 except Exception:
     print("Ingrese números correctos")
 
+print("*" * 100)
 
 # 3. Escribir un programa que reciba una cadena de caracteres y devuelva un diccionario con
 # cada palabra que contiene y la cantidad de veces que aparece (frecuencia).
 
+texto = "Es un teatro de temporada o de stagione que renueva su programación anualmente, no un teatro de repertorio. Asimismo es un teatro de producción propia, que cuenta con talleres  especializados para realizar todos los elementos necesarios para la escenificación de un  espectáculo de ópera o ballet."
+
+texto_lista = texto.split()
+texto_diccionario = orden_resultados(texto_lista)
+
+print("Ejercicio 3", texto_diccionario)
+print("*" * 100)
 
 # 4. Escribir una función que reciba una cadena de caracteres y devuelva un diccionario con cada
 # palabra que contiene y la cantidad de veces que aparece (frecuencia). Escribir otra función
 # que reciba el diccionario generado con la función anterior y devuelva una tupla con la
 # palabra más repetida y su frecuencia.
 
+
+def get_mas_repetido(mi_diccionario):
+    resultado = ("", 0)
+    for k, v in mi_diccionario.items():
+        if v > resultado[1]:
+            resultado = (k, v)
+
+    return resultado
+
+print("Ejercicio 4", get_mas_repetido(texto_diccionario))
+print("*" * 100)
 
 # 5. Sabiendo que ValueError es la excepción que se lanza cuando no podemos convertir una
 # cadena de texto en su valor numérico, escriba una función get_int() que lea un valor entero
