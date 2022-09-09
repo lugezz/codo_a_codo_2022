@@ -27,7 +27,7 @@ def maximo_comun_divisor(num1, num2):
     divisor = 1
     veces = 1
 
-    if max(num1, num2) < 1:
+    if min(num1, num2) < 1:
         print('Ingrese 2 numeros positivos')
         return -1
 
@@ -43,15 +43,46 @@ def maximo_comun_divisor(num1, num2):
 
 
 try:
-    numero1 = int(input("Ingrese el número 1: "))
-    numero2 = int(input("Ingrese el número 2: "))
+    numero1a = int(input("Ingrese el número 1: "))
+    numero2a = int(input("Ingrese el número 2: "))
+    respuesta = maximo_comun_divisor(numero1a, numero2a)
+    if respuesta > 0:
+        print(f'El Máximo Común Divisor entre {numero1a} y {numero2a} es {respuesta} ')
 
 except Exception:
     print("Ingrese números correctos")
 
-print(f'El Máximo Común Divisor entre {numero1} y {numero2} es {maximo_comun_divisor(numero1, numero2)} ')
 
 # 2. Escribir una función que calcule el mínimo común múltiplo entre dos números
+print("*" * 100)
+
+
+def minimo_comun_multipo(num1, num2):
+    respuesta = 1
+
+    if min(num1, num2) < 1:
+        print('Ingrese 2 numeros positivos')
+        return -1
+
+    divisores1 = orden_resultados(get_divisores(num1))
+    divisores2 = orden_resultados(get_divisores(num2))
+    maximo_divisor = max(list(divisores1)[-1], list(divisores2)[-1])
+
+    for i in range(1, maximo_divisor + 1):
+        respuesta *= (i ** max(divisores1.get(i, 0), divisores2.get(i, 0)))
+
+    return respuesta
+
+
+try:
+    numero1b = int(input("Ingrese el número 1: "))
+    numero2b = int(input("Ingrese el número 2: "))
+    respuesta2 = minimo_comun_multipo(numero1b, numero2b)
+    if respuesta2 > -10:
+        print(f'El Mínimo Común Múltipo entre {numero1b} y {numero2b} es {respuesta2} ')
+
+except Exception:
+    print("Ingrese números correctos")
 
 
 # 3. Escribir un programa que reciba una cadena de caracteres y devuelva un diccionario con
