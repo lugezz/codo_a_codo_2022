@@ -89,9 +89,9 @@ print("*" * 100)
 # 3. Escribir un programa que reciba una cadena de caracteres y devuelva un diccionario con
 # cada palabra que contiene y la cantidad de veces que aparece (frecuencia).
 
-texto = "Es un teatro de temporada o de stagione que renueva su programación anualmente, no un teatro de repertorio. Asimismo es un teatro de producción propia, que cuenta con talleres  especializados para realizar todos los elementos necesarios para la escenificación de un  espectáculo de ópera o ballet."
+texto = "Es un teatro de temporada o de stagione que lo que"
 
-texto_lista = texto.split()
+texto_lista = texto.lower().split()
 texto_diccionario = orden_resultados(texto_lista)
 
 print("Ejercicio 3", texto_diccionario)
@@ -298,7 +298,7 @@ class CuentaJoven(Cuenta):
         self.__bonificacion = bonificacion
 
     def mostrar(self):
-        print(f'Cuenta Joven: Su cantidad es {self.cantidad} - Su bonificación es {self.bonificacion}%')
+        print(f'Cuenta Joven: Titular: {self.titular.nombre}, su cantidad es {self.cantidad} y su bonificación es {self.bonificacion}%')
 
     def es_valido_titular(self):
         return self.titular.es_mayor_de_edad() and self.titular.edad < 25
