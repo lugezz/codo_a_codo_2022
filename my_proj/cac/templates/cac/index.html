@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>{{titulo}}</h1>
+    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum quod, atque aliquam quas, dolor voluptas repellendus accusantium debitis molestias dolorum aut? Cum consectetur hic doloribus deleniti error quis nemo blanditiis!</p>
+    <hr>
+    <p><b>Parámetros: </b>{{ parametros }}</p>
+    <hr>
+    {% if cursos %}
+        <ul>
+            {% for curso in cursos %}
+                <li>
+                    {{ curso.nombre }} - {{ curso.categoria }}
+                    <p>{{ curso.descripcion }}</p>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No hay cursos para mostrar</p>
+    {% endif %}
+    
+</body>
+</html>

@@ -1,6 +1,6 @@
 from django.http import HttpResponse
-from django.shortcuts import redirect
-from django.urls import reverse
+from django.shortcuts import render
+from django.template import loader
 
 
 def index(request):
@@ -8,10 +8,35 @@ def index(request):
         titulo = 'Titulo cuando se accede por GET'
     else:
         titulo = f'Titulo cuando accedo por otro metodo {request.method}'
-    return HttpResponse(f"""
-        <h1>{titulo}</h1>
-        <p></p>
-    """)
+
+    listado_cursos = [
+        {
+            'nombre': 'Fullstack Java',
+            'descripcion': 'Curso de Fullstack',
+            'categoria': 'Programación'
+        },
+        {
+            'nombre': 'Diseño UX/IU',
+            'descripcion': '🎨',
+            'categoria': 'Diseño'
+        },
+        {
+            'nombre': 'Big Data',
+            'descripcion': 'test',
+            'categoria': 'Analisis de Datos'
+        },
+    ]
+
+    parameters_get = request.GET.get('param')
+    print(parameters_get)
+
+    context = {
+        'titulo': titulo,
+        'cursos': listado_cursos,
+        'parametros': parameters_get,
+    }
+
+    return render(request, 'cac/index.html', context)
 
 
 # Create your views here.
@@ -59,5 +84,8 @@ def ver_proyectos_2022_07(request):
 
 
 def quienes_somos(request):
-    # return redirect('saludillo-por-defecto')
-    return redirect(reverse('saludillo-por-nombre', kwargs={'nombre': 'Cachula'}))
+    # return redirect('saludar_por_defecto')
+    # return redirect(reverse('saludar', kwargs={'nombre':'Juliana'}))
+    template = loader.get_template('cac/quienes_somos.html')
+    context = {'titulo': 'Codo a Codo - Quienes Somos'}
+    return HttpResponse(template.render(context, request))
