@@ -50,11 +50,36 @@ def saludar(request, nombre=''):
     """)
 
 
-def ver_proyectos(request, anio, mes):
-    return HttpResponse(f"""
-        <h1>Proyectos del  - {mes}/{anio}</h1>
-        <p>Listado de proyectos</p>
-    """)
+# def ver_proyectos(request, anio, mes):
+#     return HttpResponse(f"""
+#         <h1>Proyectos del  - {mes}/{anio}</h1>
+#         <p>Listado de proyectos</p>
+#     """)
+def ver_proyectos(request, anio=2022, mes=1):
+    proyectos = []
+    return render(request, 'cac/proyectos.html', {'proyectos': proyectos})
+
+
+def ver_cursos(request):
+    listado_cursos = [
+        {
+            'nombre': 'Fullstack Java',
+            'descripcion': 'Curso de Fullstack',
+            'categoria': 'Programación'
+        },
+        {
+            'nombre': 'Diseño UX/IU',
+            'descripcion': '🎨',
+            'categoria': 'Diseño'
+        },
+        {
+            'nombre': 'Big Data',
+            'descripcion': 'test',
+            'categoria': 'Analisis de Datos'
+        },
+    ]
+
+    return render(request, 'cac/cursos.html', {'cursos': listado_cursos})
 
 
 def cursos(request, nombre):
