@@ -2,13 +2,15 @@ from django.urls import path, re_path
 
 from cac.views import (
     cursos, cursos_detalle, hola_mundo,
-    index, quienes_somos, saludar,
-    ver_cursos, ver_proyectos)
+    index, index_administracion, quienes_somos,
+    saludar, ver_cursos, ver_proyectos)
 
 urlpatterns = [
     path('', index, name='inicio'),
     path('quienessomos/', quienes_somos, name='quienes_somos'),
     path('cursos/', ver_cursos, name='cursos'),
+    path('administracion', index_administracion, name='inicio_administracion'),
+
     path('hola_mundo/', hola_mundo),
     path('proyectos/', ver_proyectos, name='proyectos'),
     path('saludar/', saludar, name='saludillo-por-defecto'),
