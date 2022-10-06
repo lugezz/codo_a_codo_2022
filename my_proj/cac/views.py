@@ -114,3 +114,8 @@ def quienes_somos(request):
     template = loader.get_template('cac/quienes_somos.html')
     context = {'titulo': 'Codo a Codo - Quienes Somos'}
     return HttpResponse(template.render(context, request))
+
+
+def index_administracion(request):
+    variable = 'test variable'
+    return render(request, 'cac/administracion/index.html', {'variable': variable})
