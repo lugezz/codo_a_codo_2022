@@ -2,6 +2,8 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.template import loader
 
+from cac.forms import ContactoForm
+
 
 def index(request):
     if (request.method == 'GET'):
@@ -28,12 +30,16 @@ def index(request):
     ]
 
     parameters_get = request.GET.get('param')
-    print(parameters_get)
+    if (request.method == 'POST'):
+        contacto_form = ContactoForm(request.POST)
+    else:
+        contacto_form = ContactoForm()
 
     context = {
         'titulo': titulo,
         'cursos': listado_cursos,
         'parametros': parameters_get,
+        'contacto_form': contacto_form
     }
 
     return render(request, 'cac/index.html', context)
