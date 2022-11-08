@@ -52,3 +52,13 @@ class ContactoForm(forms.Form):
             msg = "Debe agregar la palabara 'ayuda' en el campo."
             self.add_error('asunto', msg)
             self.add_error('mensaje', msg)
+
+
+class CategoriaForm(forms.Form):
+
+    nombre = forms.CharField(
+            label='Nombre',
+            max_length=50,
+            validators=(solo_caracteres,),
+            widget=forms.TextInput(attrs={'class': 'form-control'})
+        )

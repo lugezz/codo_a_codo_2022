@@ -29,6 +29,10 @@ class Categoria(models.Model):
     def __str__(self):
         return self.nombre
 
+    def soft_delete(self):
+        self.baja = True
+        self.save()
+
 
 class Curso(models.Model):
     nombre = models.CharField(max_length=100, verbose_name='Nombre')
@@ -62,3 +66,38 @@ class Inscripcion(models.Model):
 
     class Meta:
         verbose_name_plural = "Inscripciones"
+
+
+# herencia clase abstracta
+class PersonaAbs(models.Model):
+    nombre = models.CharField(max_length=100, verbose_name='Nombre')
+    apellido = models.CharField(max_length=150, verbose_name='Apellido')
+    email = models.EmailField(max_length=150, null=True)
+    dni = models.IntegerField(verbose_name="DNI")
+
+    class Meta:
+        abstract = True
+
+
+class EstudianteAbs(PersonaAbs):
+    matricula = models.CharField(max_length=10, verbose_name='Matricula')
+
+
+class DocenteAbs(PersonaAbs):
+    legajo = models.CharField(max_length=10, verbose_name='Legajo')
+
+
+# HERENCIA MULTIPLE
+class PersonaM(models.Model):
+    nombre_m = models.CharField(max_length=100, verbose_name='Nombre')
+    apellido_m = models.CharField(max_length=150, verbose_name='Apellido')
+    email_m = models.EmailField(max_length=150, null=True)
+    dni_m = models.IntegerField(verbose_name="DNI")
+
+
+class EstudianteM(PersonaM):
+    matricula_m = models.CharField(max_length=10, verbose_name='Matricula')
+
+
+class DocenteM(PersonaM):
+    legajo_m = models.CharField(max_length=10, verbose_name='Legajo')
