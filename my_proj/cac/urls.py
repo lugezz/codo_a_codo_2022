@@ -1,7 +1,7 @@
 from django.urls import path, re_path
 
 from cac.views import (
-    categorias_eliminar, categorias_index, categorias_nuevo,
+    CategoriaView, categorias_editar, categorias_eliminar,
     cursos, cursos_detalle, hola_mundo,
     index, index_administracion, quienes_somos,
     saludar, ver_cursos, ver_proyectos)
@@ -12,8 +12,8 @@ urlpatterns = [
     path('cursos/', ver_cursos, name='cursos'),
     path('administracion', index_administracion, name='inicio_administracion'),
 
-    path('administracion/categorias', categorias_index, name='categorias_index'),
-    path('administracion/categorias/nuevo', categorias_nuevo, name='categorias_nuevo'),
+    path('administracion/categorias/nuevo', CategoriaView.as_view(), name='categorias_nuevo'),
+    path('administracion/categorias/editar/<int:id_categoria>', categorias_editar, name='categorias_editar'),
     path('administracion/categorias/eliminar/<int:id_categoria>', categorias_eliminar, name='categorias_eliminar'),
 
     path('hola_mundo/', hola_mundo),

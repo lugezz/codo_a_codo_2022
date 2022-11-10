@@ -1,6 +1,8 @@
 from django import forms
 from django.forms import ValidationError
 
+from cac.models import Categoria
+
 
 def solo_caracteres(value):
     if any(char.isdigit() for char in value):
@@ -54,11 +56,28 @@ class ContactoForm(forms.Form):
             self.add_error('mensaje', msg)
 
 
-class CategoriaForm(forms.Form):
+class CategoriaForm(forms.ModelForm):
+    # nombre = forms.CharField(error_messages={'required':'Hello! no te olvide de mi!'})
 
-    nombre = forms.CharField(
-            label='Nombre',
-            max_length=50,
-            validators=(solo_caracteres,),
-            widget=forms.TextInput(attrs={'class': 'form-control'})
-        )
+    class Meta:
+        model = Categoria
+        # fields='__all__'
+        fields = ['nombre']
+        # exclude=('baja',)
+        widgets = {
+            'nombre': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ingrese un nombre'})
+        }
+        error_messages = {
+            'nombre': {
+                'required': 'No te olvides de mi!'
+            }
+        }
+
+
+class CategoriaFormValidado(CategoriaForm):
+
+    def clean_nombre(self):
+        nombre = self.cleaned_data['nombre']
+        if nombre.upper() == 'ORIGAMI':
+            raise ValidationError('Codo a Codo no dicta cursos de esta temática')
+        return nombre
