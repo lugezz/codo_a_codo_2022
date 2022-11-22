@@ -7,7 +7,7 @@ from django.views.generic import ListView
 
 from cac.forms import (CategoriaForm, CategoriaFormValidado, ContactoForm,
                        CursoForm, EstudianteMForm, ProyectoForm)
-from cac.models import (Categoria, Curso, EstudianteM,
+from cac.models import (Categoria, CursoM, EstudianteM,
                         Proyecto)
 
 
@@ -240,7 +240,7 @@ class CategoriaView(View):
 
 
 def cursos_index(request):
-    cursos = Curso.objects.all()
+    cursos = CursoM.objects.all()
     return render(request, 'cac/administracion/cursos/index.html', {'cursos': cursos})
 
 
@@ -258,8 +258,8 @@ def cursos_nuevo(request):
 
 def cursos_editar(request, id_curso):
     try:
-        curso = Curso.objects.get(pk=id_curso)
-    except Curso.DoesNotExist:
+        curso = CursoM.objects.get(pk=id_curso)
+    except CursoM.DoesNotExist:
         return render(request, 'cac/administracion/404_admin.html')
     formulario = CursoForm(request.POST or None, request.FILES or None, instance=curso)
 
@@ -272,8 +272,8 @@ def cursos_editar(request, id_curso):
 
 def cursos_eliminar(request, id_curso):
     try:
-        curso = Curso.objects.get(pk=id_curso)
-    except Curso.DoesNotExist:
+        curso = CursoM.objects.get(pk=id_curso)
+    except CursoM.DoesNotExist:
         return render(request, 'cac/administracion/404_admin.html')
     messages.success(request, 'Se ha eliminado el curso correctamente')
     curso.delete()

@@ -1,7 +1,7 @@
 from django import forms
 from django.forms import ValidationError
 
-from cac.models import Categoria, Curso, EstudianteM, Proyecto
+from cac.models import Categoria, CursoM, EstudianteM, Proyecto
 
 
 def solo_caracteres(value):
@@ -86,7 +86,7 @@ class CategoriaFormValidado(CategoriaForm):
 class CursoForm(forms.ModelForm):
 
     class Meta:
-        model = Curso
+        model = CursoM
         fields = ['nombre', 'fecha_inicio', 'portada', 'descripcion', 'categoria']
 
     nombre = forms.CharField(
@@ -136,5 +136,5 @@ class ProyectoForm(forms.ModelForm):
             'anio': forms.NumberInput(attrs={'class': 'form-control'}),
             'url': forms.URLInput(attrs={'class': 'form-control'}),
             'portada': forms.FileInput(attrs={'class': 'form-control'}),
-            'estudiante': forms.Select(attrs={'class': 'form-control'}),
+            'estudianteM': forms.Select(attrs={'class': 'form-control'}),
         }

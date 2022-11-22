@@ -49,21 +49,24 @@ class Categoria(models.Model):
     nombre = models.CharField(max_length=50, verbose_name='Nombre')
     baja = models.BooleanField(default=0)
 
-
-class Curso(models.Model):
-    nombre = models.CharField(max_length=100, verbose_name='Nombre')
-    descripcion = models.TextField(null=True, verbose_name='Descripcion')
-    fecha_inicio = models.DateField(verbose_name='Fecha de inicio', null=True, default=None)
-    portada = models.ImageField(upload_to='imagenes/', null=True, verbose_name='Portada')
-    categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE)  # Relacion mucho a uno
-    estudiantes = models.ManyToManyField(EstudianteM, through='Inscripcion')  # Related_name="cursos"
-
-    def __str__(self):
+    def __str__(self) -> str:
         return self.nombre
 
-    def delete(self, using=None, keep_parents=False):
-        self.portada.storage.delete(self.portada.name)  # Borrado fisico
-        super().delete()
+
+# class Curso(models.Model):
+#     nombre = models.CharField(max_length=100, verbose_name='Nombre')
+#     descripcion = models.TextField(null=True, verbose_name='Descripcion')
+#     fecha_inicio = models.DateField(verbose_name='Fecha de inicio', null=True, default=None)
+#     portada = models.ImageField(upload_to='imagenes/', null=True, verbose_name='Portada')
+#     categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE)  # Relacion mucho a uno
+#     estudiantes = models.ManyToManyField(EstudianteM, through='Inscripcion')  # Related_name="cursos"
+
+#     def __str__(self):
+#         return self.nombre
+
+#     def delete(self, using=None, keep_parents=False):
+#         self.portada.storage.delete(self.portada.name)  # Borrado fisico
+#         super().delete()
 
 
 # class Curso(models.Model):
@@ -100,30 +103,6 @@ class Curso(models.Model):
 #     legajo = models.CharField(max_length=10, verbose_name='Legajo')
 
 
-# HERENCIA MULTIPLE
-class Inscripcion(models.Model):
-
-    ESTADOS = [
-        (1, 'Inscripto'),
-        (2, 'Cursando'),
-        (3, 'Egresado'),
-    ]
-    fecha_creacion = models.DateField(verbose_name='Fecha de creacion')
-    estudiante = models.ForeignKey(EstudianteM, on_delete=models.CASCADE)
-    curso = models.ForeignKey(Curso, on_delete=models.CASCADE)
-    estado = models.IntegerField(choices=ESTADOS, default=1)
-
-    def __str__(self):
-        return f'{self.id} - {self.estudiante} - {self.curso}'
-
-    class Meta:
-        verbose_name_plural = "Inscripciones"
-
-
-class DocenteM(PersonaM):
-    legajo_m = models.CharField(max_length=10, verbose_name='Legajo')
-
-
 class CursoM(models.Model):
     nombre = models.CharField(max_length=100, verbose_name='Nombre')
     descripcion = models.TextField(null=True, verbose_name='Descripcion')
@@ -138,6 +117,30 @@ class CursoM(models.Model):
     def delete(self, using=None, keep_parents=False):
         self.portada.storage.delete(self.portada.name)  # Borrado fisico
         super().delete()
+
+
+# HERENCIA MULTIPLE
+class Inscripcion(models.Model):
+
+    ESTADOS = [
+        (1, 'Inscripto'),
+        (2, 'Cursando'),
+        (3, 'Egresado'),
+    ]
+    fecha_creacion = models.DateField(verbose_name='Fecha de creacion')
+    estudiante = models.ForeignKey(EstudianteM, on_delete=models.CASCADE)
+    curso = models.ForeignKey(CursoM, on_delete=models.CASCADE)
+    estado = models.IntegerField(choices=ESTADOS, default=1)
+
+    def __str__(self):
+        return f'{self.id} - {self.estudiante} - {self.curso}'
+
+    class Meta:
+        verbose_name_plural = "Inscripciones"
+
+
+class DocenteM(PersonaM):
+    legajo_m = models.CharField(max_length=10, verbose_name='Legajo')
 
 
 class Proyecto(models.Model):
