@@ -1,12 +1,14 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.contrib import messages
 from django.shortcuts import redirect, render
 from django.template import loader
 from django.views import View
 from django.views.generic import ListView
 
-from cac.forms import CategoriaForm, CategoriaFormValidado, ContactoForm
-from cac.models import Categoria
+from cac.forms import (CategoriaForm, CategoriaFormValidado, ContactoForm,
+                       CursoForm, EstudianteMForm, ProyectoForm)
+from cac.models import (Categoria, Curso, EstudianteM,
+                        Proyecto)
 
 
 def index(request):
@@ -85,6 +87,24 @@ def saludar(request, nombre=''):
 def ver_proyectos(request, anio=2022, mes=1):
     proyectos = []
     return render(request, 'cac/proyectos.html', {'proyectos': proyectos})
+
+
+def api_proyectos(request,):
+    proyectos = [{
+        'autor': 'Gustavo Villegas',
+        'portada': 'https://agenciadeaprendizaje.bue.edu.ar/wp-content/uploads/2021/12/Gustavo-Martin-Villegas-300x170.png',
+        'url': 'https://marvi-artarg.web.app/'
+    }, {
+        'autor': 'Enzo Martín Zotti',
+        'portada': 'https://agenciadeaprendizaje.bue.edu.ar/wp-content/uploads/2022/01/Enzo-Martin-Zotti-300x170.jpg',
+        'url': 'https://hablaconmigo.com.ar/'
+    }, {
+        'autor': 'María Echevarría',
+        'portada': 'https://agenciadeaprendizaje.bue.edu.ar/wp-content/uploads/2022/01/Maria-Echevarria-300x170.jpg',
+        'url': 'https://compassionate-colden-089e8a.netlify.app/'
+    }, ]
+    response = {'status': 'Ok', 'code': 200, 'message': 'Listado de proyectos', 'data': proyectos}
+    return JsonResponse(response, safe=False)
 
 
 def ver_cursos(request):
@@ -212,3 +232,136 @@ class CategoriaView(View):
             form.save()
             return redirect('categorias_index')
         return render(request, self.template_name, {'formulario': form})
+
+
+"""
+    CRUD Cursos
+"""
+
+
+def cursos_index(request):
+    cursos = Curso.objects.all()
+    return render(request, 'cac/administracion/cursos/index.html', {'cursos': cursos})
+
+
+def cursos_nuevo(request):
+    # forma de resumida de instanciar un formulario basado en model con los
+    # datos recibidos por POST si la petición es por POST o bien vacio(None)
+    # Si la petición es por GET
+    formulario = CursoForm(request.POST or None, request.FILES or None)
+    if formulario.is_valid():
+        formulario.save()
+        messages.success(request, 'Se ha creado el curso correctamente')
+        return redirect('cursos_index')
+    return render(request, 'cac/administracion/cursos/nuevo.html', {'formulario': formulario})
+
+
+def cursos_editar(request, id_curso):
+    try:
+        curso = Curso.objects.get(pk=id_curso)
+    except Curso.DoesNotExist:
+        return render(request, 'cac/administracion/404_admin.html')
+    formulario = CursoForm(request.POST or None, request.FILES or None, instance=curso)
+
+    if formulario.is_valid():
+        formulario.save()
+        messages.success(request, 'Se ha editado el curso correctamente')
+        return redirect('curso_index')
+    return render(request, 'cac/administracion/cursos/editar.html', {'formulario': formulario})
+
+
+def cursos_eliminar(request, id_curso):
+    try:
+        curso = Curso.objects.get(pk=id_curso)
+    except Curso.DoesNotExist:
+        return render(request, 'cac/administracion/404_admin.html')
+    messages.success(request, 'Se ha eliminado el curso correctamente')
+    curso.delete()
+    return redirect('cursos_index')
+
+
+"""
+    CRUD Estudiantes
+"""
+
+
+def estudiantes_index(request):
+    estudiantes = EstudianteM. objects.all()
+    return render(request, 'cac/administracion/estudiantes/index.html', {'estudiantes': estudiantes})
+
+
+def estudiantes_nuevo(request):
+    formulario = EstudianteMForm(request.POST or None)
+    if formulario.is_valid():
+        formulario.save()
+        messages.success(request, 'Se ha creado al estudiante correctamente')
+        return redirect('estudiantes_index')
+
+    return render(request, 'cac/administracion/estudiantes/nuevo.html', {'formulario': formulario})
+
+
+def estudiantes_editar(request, id_estudiante):
+    try:
+        estudiante = EstudianteM.objects.get(pk=id_estudiante)
+    except EstudianteM.DoesNotExist:
+        return render(request, 'cac/administracion/404_admin.html')
+
+    formulario = EstudianteMForm(request.POST or None, request.FILES or None, instance=estudiante)
+    if formulario.is_valid():
+        formulario.save()
+        messages.success(request, 'Se ha editado al estudiante correctamente')
+        return redirect('estudiantes_index')
+
+    return render(request, 'cac/administracion/estudiantes/editar.html', {'formulario': formulario})
+
+
+def estudiantes_eliminar(request, id_estudiante):
+    try:
+        estudiante = Proyecto.objects.get(pk=id_estudiante)
+    except Proyecto.DoesNotExist:
+        return render(request, 'cac/administracion/404_admin.html')
+    estudiante.delete()
+    messages.success(request, 'Se ha eliminado al estudiante correctamente')
+    return redirect('proyectos_index')
+
+
+"""
+    CRUD Proyectos
+"""
+
+
+def proyectos_index(request):
+    proyectos = Proyecto.objects.all()
+    return render(request, 'cac/administracion/proyectos/index.html', {'proyectos': proyectos})
+
+
+def proyectos_nuevo(request):
+    formulario = ProyectoForm(request.POST or None, request.FILES or None)
+    if formulario.is_valid():
+        formulario.save()
+        messages.success(request, 'Se ha creado el proyecto correctamente')
+        return redirect('proyectos_index')
+    return render(request, 'cac/administracion/proyectos/nuevo.html', {'formulario': formulario})
+
+
+def proyectos_editar(request, id_proyecto):
+    try:
+        proyecto = Proyecto.objects.get(pk=id_proyecto)
+    except Proyecto.DoesNotExist:
+        return render(request, 'cac/administracion/404_admin.html')
+    formulario = ProyectoForm(request.POST or None, request.FILES or None, instance=proyecto)
+    if formulario.is_valid():
+        formulario.save()
+        messages.success(request, 'Se ha editado el proyecto correctamente')
+        return redirect('proyectos_index')
+    return render(request, 'cac/administracion/proyectos/editar.html', {'formulario': formulario})
+
+
+def proyectos_eliminar(request, id_proyecto):
+    try:
+        proyecto = Proyecto.objects.get(pk=id_proyecto)
+    except Proyecto.DoesNotExist:
+        return render(request, 'cac/administracion/404_admin.html')
+    messages.success(request, 'Se ha eliminado el proyecto correctamente')
+    proyecto.delete()
+    return redirect('proyectos_index')
